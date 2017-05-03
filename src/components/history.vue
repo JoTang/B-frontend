@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="table-responsive">
     <table class="table table-hover">
       <thead>
         <tr>
@@ -8,17 +8,19 @@
           <th>时间</th>
           <th>描述</th>
           <th>创建者IP</th>
-          <th>创建者User-Agent</th>
+          <th>创建者浏览器</th>
+          <th>创建者OS</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="record in sorted">
+        <tr v-for="record in processedData" :key="record.id">
           <td>{{record.id}}</td>
           <td>{{record.amount}}</td>
           <td>{{record.time}}</td>
           <td>{{record.description}}</td>
           <td>{{record.ip}}</td>
-          <td>{{record.ua}}</td>
+          <td>{{record.browser}}</td>
+          <td>{{record.os}}</td>
         </tr>
       </tbody>
     </table>
@@ -30,12 +32,15 @@
 </template>
 
 <script>
+import timeago from 'timeago.js';
+
 export default {
   data() {
     return {
       historyData: [],
       showSuccessSign: false,
       showFailSign: false,
+      url: process.env.URL,
     };
   },
   computed: {
@@ -46,26 +51,32 @@ export default {
       });
       return result;
     },
-    sorted() {
-      return this.historyData.sort((a, b) => (a.id - b.id));
+    processedData() {
+      return this.historyData.map((record) => {
+        const processedRecord = record;
+        // eslint-disable-next-line no-undef
+        const ua = new UAParser().setUA(processedRecord.ua);
+        processedRecord.browser = `${ua.getBrowser().name}/${ua.getBrowser().version}`;
+        processedRecord.os = `${ua.getOS().name} ${ua.getOS().version}`;
+        processedRecord.time = timeago().format(processedRecord.time, 'zh_CN');
+        return processedRecord;
+      });
     },
   },
   methods: {
     loadHistory() {
       this.showSuccessSign = false;
-      this.showSuccessSign = false;
-      fetch('http://fa527e10.jotang.party/transaction').then((res) => {
-        if (res.ok) {
-          this.historyData = res.body.json;
-          this.historyData.forEach((record) => {
-            const time = new Date(record.time);
-            // eslint-disable-next-line no-param-reassign
-            record.time = time.toString();
-          });
-          this.showSuccessSign = true;
-        } else {
-          this.showFailSign = true;
-        }
+      this.showFailSign = false;
+      const component = this;
+      // eslint-disable-next-line no-undef
+      $.ajax(this.url, {
+        success(data) {
+          component.showSuccessSign = true;
+          component.historyData = data;
+        },
+        error() {
+          component.showFailSign = true;
+        },
       });
     },
   },

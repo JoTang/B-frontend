@@ -11,6 +11,9 @@
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
+    "bootstrap": "^3.3.7",
+    "flatpickr": "^2.6.1",
+    "jquery": "^3.2.1",
     "timeago.js": "^3.0.1",
     "vue": "^2.2.2"
   },

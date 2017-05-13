@@ -11,26 +11,36 @@
     <div class="form-group">
       <label for="timeInput">时间</label>
       <div class="input-group date form_date" id="timeInputGroup">
-        <input id="timeInput" type="text" class="form-control" readonly>
-        <span class="input-group-addon">
-            <span class="glyphicon glyphicon-calendar"></span>
+        <input id="timeInput" type="text" class="form-control" v-model="rawTime" readonly data-input>
+        <span class="input-group-addon" data-toggle>
+          <span class="glyphicon glyphicon-calendar"></span>
+        </span>
+        <span class="input-group-addon" data-clear>
+          <span class="glyphicon glyphicon-remove"></span>
         </span>
       </div>
     </div>
     <button type="submit" class="btn btn-default">提交</button>
-    <span class="text-success" v-if="showSuccessSign"><span class="glyphicon glyphicon-ok">成功</span></span>
-    <span class="text-danger" v-if="showFailSign"><span class="glyphicon glyphicon-remove">失败</span></span>
+    <span class="text-success" v-if="showSuccessSign">
+      <span class="glyphicon glyphicon-ok">成功</span>
+    </span>
+    <span class="text-danger" v-if="showFailSign">
+      <span class="glyphicon glyphicon-remove">失败</span>
+    </span>
   
   </form>
 </template>
 
 <script>
+import 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
+
 export default {
   data() {
     return {
       amount: 0,
       description: '',
-      time: Date.now(),
+      rawTime: '',
       showSuccessSign: false,
       showFailSign: false,
       url: process.env.URL,
@@ -49,6 +59,9 @@ export default {
         description: this.description,
         time: this.time,
       };
+    },
+    time() {
+      return Date.parse(this.rawTime);
     },
   },
   methods: {
@@ -73,16 +86,15 @@ export default {
       });
     },
   },
+  beforeMount() {
+    this.$set(this.$data, 'rawTime', 0);
+  },
   mounted() {
     // eslint-disable-next-line no-undef
-    $('#timeInputGroup').datetimepicker({
-      format: 'yyyy-mm-dd hh:ii',
-      autoclose: true,
-      todayBtn: true,
-      todayHighlight: true,
-      language: 'zh-CN',
-    }).on('changeDate', (e) => {
-      this.time = e.date.valueOf();
+    $('#timeInputGroup').flatpickr({
+      enableTime: true,
+      wrap: true,
+      defaultDate: new Date(),
     });
   },
 

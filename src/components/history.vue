@@ -71,15 +71,14 @@ export default {
     loadHistory() {
       this.showSuccessSign = false;
       this.showFailSign = false;
-      const component = this;
       // eslint-disable-next-line no-undef
       $.ajax(this.url, {
-        success(data) {
-          component.showSuccessSign = true;
-          component.historyData = data;
+        success: (data) => {
+          this.showSuccessSign = true;
+          this.historyData = data;
         },
-        error() {
-          component.showFailSign = true;
+        error: () => {
+          this.showFailSign = true;
         },
       });
     },

@@ -36,6 +36,7 @@
 
 <script>
 import timeago from 'timeago.js';
+import UAParser from 'ua-parser-js';
 
 export default {
   data() {

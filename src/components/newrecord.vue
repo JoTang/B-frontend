@@ -36,6 +36,7 @@ import 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
 export default {
+  /* eslint-disable no-undef */
   data() {
     return {
       amount: 0,
@@ -76,7 +77,6 @@ export default {
       }).then((res) => {
         if (res.ok) {
           this.showSuccessSign = true;
-          // eslint-disable-next-line no-undef
           $('form')[0].reset();
           this.amount = 0;
           this.description = '';
@@ -86,16 +86,14 @@ export default {
       });
     },
   },
-  beforeMount() {
-    this.$set(this.$data, 'rawTime', 0);
-  },
   mounted() {
-    // eslint-disable-next-line no-undef
     $('#timeInputGroup').flatpickr({
       enableTime: true,
       wrap: true,
       defaultDate: new Date(),
+      time_24hr: true,
     });
+    this.$set(this.$data, 'rawTime', $('#timeInput').val());
   },
 
 };

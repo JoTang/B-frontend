@@ -22,10 +22,10 @@
     </div>
     <button type="submit" class="btn btn-default">提交</button>
     <span class="text-success" v-if="showSuccessSign">
-      <span class="glyphicon glyphicon-ok">成功</span>
+      <span class="glyphicon glyphicon-ok"></span> 成功
     </span>
     <span class="text-danger" v-if="showFailSign">
-      <span class="glyphicon glyphicon-remove">失败</span>
+      <span class="glyphicon glyphicon-remove"></span> 失败
     </span>
   
   </form>

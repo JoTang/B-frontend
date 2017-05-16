@@ -26,11 +26,14 @@
     </table>
     <p class="bg-info">当前剩余经费数量:{{balance}}</p>
     <button class="btn btn-default" @click="loadHistory">
-      <span class="glyphicon glyphicon-refresh"></span> 刷新</button>
+      <span class="glyphicon glyphicon-refresh"></span> 刷新
+    </button>
     <span class="text-success" v-if="showSuccessSign">
-      <span class="glyphicon glyphicon-ok"></span>成功</span>
+      <span class="glyphicon glyphicon-ok"></span> 成功
+    </span>
     <span class="text-danger" v-if="showFailSign">
-      <span class="glyphicon glyphicon-remove"></span>失败</span>
+      <span class="glyphicon glyphicon-remove"></span> 失败
+    </span>
   </div>
 </template>
 

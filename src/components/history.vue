@@ -52,14 +52,10 @@ export default {
   },
   computed: {
     balance() {
-      let result = 0;
-      this.historyData.forEach((record) => {
-        result += record.amount;
-      });
-      return result;
+      return this.historyData.reduce((acc, cur) => (acc + cur.amount), 0);
     },
     processedData() {
-      return this.historyData.map((record) => {
+      return this.historyData.sort((a, b) => b.time - a.time).map((record) => {
         const processedRecord = record;
         // eslint-disable-next-line no-undef
         const ua = new UAParser().setUA(processedRecord.ua);
@@ -67,7 +63,7 @@ export default {
         processedRecord.os = `${ua.getOS().name} ${ua.getOS().version}`;
         processedRecord.time = timeago().format(processedRecord.time, 'zh_CN');
         return processedRecord;
-      }).sort((a, b) => b.id - a.id);
+      });
     },
   },
   methods: {
